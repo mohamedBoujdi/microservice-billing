@@ -12,6 +12,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InvoiceResponseDTO {
-    private BigDecimal amount;
+    private String id;
+    private Date date;
+    private Double amount;
     private Customer customer;
 }

@@ -17,7 +17,7 @@ public class Invoice {
     @Id // primary key
     private String id;
     private Date date;
-    private BigDecimal amount;
+    private Double amount;
     private String customerID;
     @Transient // this is not a column in the database
     private Customer customer;
