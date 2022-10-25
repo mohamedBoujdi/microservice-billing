@@ -13,5 +13,6 @@ spring:
       enabled: true
 Eureka:
   instance:
-    preferIpAddress: true
+    prefer-ip-address: true
+
 

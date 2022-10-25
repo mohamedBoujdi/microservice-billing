@@ -10,4 +10,13 @@ public interface InvoiceService {
      InvoiceResponseDTO save(InvoiceRequestDTO invoiceRequestDTO);
      InvoiceResponseDTO getInvoice(String id);
      List<InvoiceResponseDTO> getInvoicesByCustomerID(String customerID);
+
+     //all invoices
+     List<InvoiceResponseDTO> getAllInvoices();
+
+     //delete invoice
+     void deleteInvoice(String id);
+
+     //update invoice
+     InvoiceResponseDTO updateInvoice(String id, InvoiceRequestDTO invoiceRequestDTO);
 }

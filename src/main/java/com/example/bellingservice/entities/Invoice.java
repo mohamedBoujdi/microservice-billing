@@ -19,6 +19,6 @@ public class Invoice {
     private Date date;
     private Double amount;
     private String customerID;
-    @Transient // this is not a column in the database
+   @Transient 
     private Customer customer;
 }

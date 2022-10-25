@@ -46,7 +46,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceResponseDTO getInvoice(String id) {
         Invoice invoice = invoiceRepository.findById(id).get();
-        Customer customer = customerRestClient.getCustomerById(invoice.getCustomer().getId());
+        System.out.println("invoice "+ invoice.toString());
+        Customer customer = customerRestClient.getCustomerById(invoice.getCustomerID());
+        System.out.println("customer "+ customer.toString());
         invoice.setCustomer(customer);
         return invoiceMapper.fromInvoice(invoice);
     }
@@ -56,4 +58,31 @@ public class InvoiceServiceImpl implements InvoiceService {
         List<Invoice> invoicesByCustomerID = invoiceRepository.findByCustomerID(customerID);
         return invoicesByCustomerID.stream().map(invoiceMapper::fromInvoice).toList();
     }
+   //all invoices
+    @Override
+    public List<InvoiceResponseDTO> getAllInvoices() {
+        List<Invoice> invoices = invoiceRepository.findAll();
+        //add customer to invoice
+        invoices.forEach(invoice -> {
+            Customer customer = customerRestClient.getCustomerById(invoice.getCustomerID());
+            invoice.setCustomer(customer);
+        });
+        return invoices.stream().map(invoiceMapper::fromInvoice).toList();
+    }
+    //delete invoice
+    @Override
+    public void deleteInvoice(String id) {
+        invoiceRepository.deleteById(id);
+    }
+    //update invoice
+    @Override
+    public InvoiceResponseDTO updateInvoice(String id, InvoiceRequestDTO invoiceRequestDTO) {
+        Invoice invoice = invoiceRepository.findById(id).get();
+        invoice.setCustomerID(invoiceRequestDTO.getCustomerID());
+        invoice.setAmount(invoiceRequestDTO.getAmount());
+        invoice.setCustomer(customerRestClient.getCustomerById(invoiceRequestDTO.getCustomerID()));
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+        return invoiceMapper.fromInvoice(savedInvoice);
+    }
+
 }
