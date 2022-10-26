@@ -14,5 +14,12 @@ spring:
 Eureka:
   instance:
     prefer-ip-address: true
+management:
+  endpoint:
+    web:
+        exposure:
+            include: "*" # expose all endpoints
+
+
 
 
