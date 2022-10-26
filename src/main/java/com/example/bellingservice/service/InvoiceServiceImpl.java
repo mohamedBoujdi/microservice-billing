@@ -4,6 +4,7 @@ import com.example.bellingservice.Dtos.InvoiceRequestDTO;
 import com.example.bellingservice.Dtos.InvoiceResponseDTO;
 import com.example.bellingservice.entities.Customer;
 import com.example.bellingservice.entities.Invoice;
+import com.example.bellingservice.exceptions.CustomerNotFoundException;
 import com.example.bellingservice.mapper.InvoiceMapper;
 import com.example.bellingservice.openFiegn.CustomerRestClient;
 import com.example.bellingservice.repository.InvoiceRepository;
@@ -38,7 +39,14 @@ public class InvoiceServiceImpl implements InvoiceService {
         * on verifie si le customer existe dans la base de donnee
         * l'integrite referentielle
         * */
-        invoice.setCustomer(customerRestClient.getCustomerById(invoiceRequestDTO.getCustomerID()));
+        Customer customer=null;
+        try {
+            customer = customerRestClient.getCustomerById(invoiceRequestDTO.getCustomerID());
+
+        } catch (CustomerNotFoundException e) {
+           throw e;
+        }
+        invoice.setCustomer(customer);
         Invoice savedInvoice = invoiceRepository.save(invoice);
         return invoiceMapper.fromInvoice(savedInvoice);
     }

@@ -7,6 +7,8 @@ import com.example.bellingservice.entities.Invoice;
 import com.example.bellingservice.repository.InvoiceRepository;
 import com.example.bellingservice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +25,6 @@ public class InvoiceController {
     @GetMapping(path = "/invoice/{id}")
     public InvoiceResponseDTO getInvoice(@PathVariable(name = "id") String id){
         return invoiceService.getInvoice(id);
-        //return invoiceRepository.findById(id).get();
     }
 
     @GetMapping(path = "/invoice/customer/{CustomerID}")
@@ -48,5 +49,10 @@ public class InvoiceController {
     public InvoiceResponseDTO updateInvoice(@PathVariable(name = "id") String id, @RequestBody InvoiceRequestDTO invoiceRequestDTO){
         return invoiceService.updateInvoice(id, invoiceRequestDTO);
     }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
 
 }
